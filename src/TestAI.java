@@ -39,7 +39,7 @@ import org.bouncycastle.util.encoders.Hex;
 
 
 
-public class Testfunctions {
+public class TestAI {
 	private static KeyPair ECKeyPair;
 	private static KeyPair XECKeyPair;
 	public static void main(String[] args) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, InvalidKeySpecException, IOException, InvalidParameterSpecException, NoSuchProviderException {
@@ -53,21 +53,25 @@ public class Testfunctions {
 		double version = Security.getProvider(BouncyCastleProvider.PROVIDER_NAME).getVersion();
 		System.out.println("BC version :" + version);
 		
-		KeyPairGenerator aliceKpairGEN = KeyPairGenerator.getInstance("XDH");
+		KeyPairGenerator aliceKpairGEN = KeyPairGenerator.getInstance("ECDH");
 		//创建alice密钥对
-		ECGenParameterSpec parameterSpec = new ECGenParameterSpec("X25519");
+		ECGenParameterSpec parameterSpec = new ECGenParameterSpec("secp256r1");
 		aliceKpairGEN.initialize(parameterSpec);
 		//初始化alice密钥参数
 		KeyPair aliceKeyPair = aliceKpairGEN.generateKeyPair();
 		//alice生成了密钥对
-		KeyAgreement aliceAgree = KeyAgreement.getInstance("XDH");
+		KeyAgreement aliceAgree = KeyAgreement.getInstance("ECDH");
 		aliceAgree.init(aliceKeyPair.getPrivate());
 		//生成alice的Agreement对象
 		byte[] alicePub_trans = aliceKeyPair.getPublic().getEncoded();
 		//模拟alice的公钥在信道传递
 		
+		
+		//   A -> B 
+		
+		
 		//bob收到了alice的公钥（编码的）
-		KeyFactory bobKeyfac = KeyFactory.getInstance("XDH");
+		KeyFactory bobKeyfac = KeyFactory.getInstance("ECDH");
 		X509EncodedKeySpec x509keysp = new X509EncodedKeySpec(alicePub_trans);
 		PublicKey alice_pubkey = bobKeyfac.generatePublic(x509keysp);
 		//bob封装密钥,得到alice公钥
@@ -79,21 +83,25 @@ public class Testfunctions {
 		//得到alice的EC参数
 		
 		//接下来bob创建自己的密钥对
-		KeyPairGenerator bobKeypairGEN  = KeyPairGenerator.getInstance("XDH");
+		KeyPairGenerator bobKeypairGEN  = KeyPairGenerator.getInstance("ECDH");
 		bobKeypairGEN.initialize(ecFromAlice);
 		KeyPair bobKeyPair = bobKeypairGEN.generateKeyPair();
 		//bob成功生成参数和alice相同的密钥对
 		
 		//bob创建自己的agree对象
-		KeyAgreement bobAgree = KeyAgreement.getInstance("XDH");
+		KeyAgreement bobAgree = KeyAgreement.getInstance("ECDH");
 		bobAgree.init(bobKeyPair.getPrivate());
 		//bob把自己的公钥发给alice
 		byte[] bobPubkey_trans = bobKeyPair.getPublic().getEncoded(); 
 		//模拟传输
 		
+		
+		//   B -> A
+		
+		
 		//接下来alice收到了bob公钥（数组）
 		//alice也是把其先封装为密钥
-		KeyFactory aliceKeyFac = KeyFactory.getInstance("XDH");
+		KeyFactory aliceKeyFac = KeyFactory.getInstance("ECDH");
 		X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(bobPubkey_trans);
 		PublicKey bobPublicKey = aliceKeyFac.generatePublic(x509KeySpec);
 		//接下来钟老师的注释是这样写的：Alice使用Bob的公钥进行共享密钥生成的一下操作
@@ -109,8 +117,8 @@ public class Testfunctions {
         byte[] bobSharedSecret = bobAgree.generateSecret();
         
         //那么这俩数组应该是一样的。可以拿去制作会话密钥
-        System.out.println(aliceSharedSecret);
-        System.out.println(bobSharedSecret);
+        System.out.println(Hex.toHexString(aliceSharedSecret));
+        System.out.println(Hex.toHexString(bobSharedSecret));
 		
 		
 	}

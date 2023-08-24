@@ -31,14 +31,19 @@
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-debug-jdk18on</artifactId>
-			<version>1.72</version>
+			<version>1.76</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk18on -->
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk18on</artifactId>
-			<version>1.72</version>
+			<version>1.76</version>
 		</dependency>
 
+		<dependency>
+			<groupId>Cipher</groupId>
+			<artifactId>Cipher</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

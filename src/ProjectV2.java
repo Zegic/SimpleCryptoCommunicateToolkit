@@ -11,6 +11,10 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Security;
+import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.ECPublicKey;
+import java.security.spec.ECGenParameterSpec;
+import java.security.spec.ECParameterSpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
@@ -21,6 +25,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyAgreement;
 import javax.crypto.NoSuchPaddingException;
 
 import javax.crypto.spec.IvParameterSpec;
@@ -77,6 +82,8 @@ public class ProjectV2 extends JFrame {
 	 */
 	
 	private static KeyPair rsaKeyPair;
+	private static KeyPair ecKeyPair;
+	private static int Server_or_Client;
 	
 	public static void main(String[] args) {
 		Security.addProvider(new BouncyCastleProvider());
@@ -292,7 +299,7 @@ public class ProjectV2 extends JFrame {
 		Encrypt_File.add(comboBox_choose_suanfa);
 		
 		textField_output_path_file = new JTextField();
-		textField_output_path_file.setBounds(220, 296, 765, 51);
+		textField_output_path_file.setBounds(243, 296, 742, 51);
 		Encrypt_File.add(textField_output_path_file);
 		textField_output_path_file.setColumns(10);
 		
@@ -378,6 +385,37 @@ public class ProjectV2 extends JFrame {
 		text_Filehash_output_hash.setBounds(202, 326, 783, 52);
 		Hash_everything.add(text_Filehash_output_hash);
 		//======text=======
+		
+		//------ECDH-------
+		JPanel ECDH生成密钥 = new JPanel();
+		Main_Pane.addTab("ECDH", null, ECDH生成密钥, null);
+		ECDH生成密钥.setLayout(null);
+		
+		JTextArea ECDH_code_A = new JTextArea();
+		ECDH_code_A.setBounds(10, 10, 480, 239);
+		ECDH生成密钥.add(ECDH_code_A);
+		
+		JTextArea ECDH_code_B = new JTextArea();
+		ECDH_code_B.setBounds(505, 10, 480, 239);
+		ECDH生成密钥.add(ECDH_code_B);
+		
+		JTextArea Explain_A = new JTextArea();
+		Explain_A.setBounds(10, 259, 480, 93);
+		ECDH生成密钥.add(Explain_A);
+		
+		JTextArea Explain_B = new JTextArea();
+		Explain_B.setBounds(505, 259, 480, 93);
+		ECDH生成密钥.add(Explain_B);
+		
+		JTextArea PASSWD_ECDH = new JTextArea();
+		PASSWD_ECDH.setBounds(223, 376, 559, 64);
+		ECDH生成密钥.add(PASSWD_ECDH);
+		
+		JButton btn_START_ECDH = new JButton("\u50BB\u74DC\u5F0F\u6309\u94AE\u4E4B\u4E00\u952E\u4EA4\u6362");
+		btn_START_ECDH.setBounds(332, 492, 339, 93);
+		ECDH生成密钥.add(btn_START_ECDH);
+		//=======ECDH======
+		
 		
 		//======定义部分结束。下面是按钮部分=======
 		
@@ -478,12 +516,14 @@ public class ProjectV2 extends JFrame {
 		comboBox_choose_suanfa.setModel(new DefaultComboBoxModel<>(new String[] {"选择加密方式,默认 AES-OFB","SM4(待开发)"}));
 		
 		JButton btnNewButton_1 = new JButton("\u9009\u62E9\u8F93\u51FA\u8DEF\u5F84\uFF08\u9ED8\u8BA4\u4E3A\u6E90\u8DEF\u5F84\uFF09");
-		btnNewButton_1.setBounds(10, 296, 201, 51);
+		btnNewButton_1.setBounds(10, 296, 223, 51);
 		Encrypt_File.add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("\u5BC6\u7801\u662F\u5426\u52A0\u76D0\uFF08\u9ED8\u8BA4\u52A0\u76D0\uFF0C\u5F85\u5F00\u53D1\uFF09");
 		btnNewButton_2.setBounds(761, 167, 224, 51);
 		Encrypt_File.add(btnNewButton_2);
+		
+
 		
 		
 		btn_start_encrypt.addActionListener(new ActionListener() {
@@ -627,6 +667,70 @@ public class ProjectV2 extends JFrame {
 		});//这个按钮实现一键加解密+复制粘贴
 				
 				//RSA短对话=========
+		
+		//-----------ECDH-------------
+			//ECDH之神命令你们退下
+		
+		//按钮的设计思路是这样的：
+		//首先整个交换只有一个按钮（除了复制粘贴按钮）
+		//至于提示屏幕是否分成俩，以后研究
+		//按钮按下，先判断有没有code在A屏
+		//如果有，那就变成服务器
+			//服务器收到code，进行处理
+			//服务器生成公钥，由用户复制到客户端
+			//服务器生成会话密钥
+			
+		//如果没有，那就变成客户端
+			//客户端生成keypair，然后生成code
+			//由用户复制code，发送到服务器
+			//客户端收到公钥，生成会话密钥
+		
+		//最后把密钥显示在passwd屏幕上。
+		//我还在思考passwd到底是byte[]还是字符串，需不需要hash
+		//那么就字符串吧。然后会把交换来的会话密钥自动复制到每一个AES的passwd屏幕里
+		
+		btn_START_ECDH.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if (ECDH_code_B.getText().length()==0) {
+				if (ECDH_code_A.getText().length()!=0) {
+					//如果有，那就变成服务器
+					Server_or_Client = 1;
+					//服务器收到code，进行处理
+					//服务器生成公钥，由用户复制到客户端
+					//服务器生成会话密钥
+					byte[] passwd = Server_gen_passwd(ECDH_code_A.getText());
+					//PASSWD_ECDH.setText(HASH_string_SHA(passwd.toString()));
+					PASSWD_ECDH.setText(Hex.toHexString(passwd));
+					ECDH_code_B.setText(Server_code());
+					
+				}else {
+					//如果没有，那就变成客户端
+					Server_or_Client = 0;
+					//客户端生成keypair，然后生成code
+					//由用户复制code，发送到服务器
+					//客户端收到公钥，生成会话密钥
+					Gen_EC_Key_Pair();
+					ECDH_code_A.setText(Client_gen_code());
+				}}
+				else {
+					if (Server_or_Client == 0) {
+						byte[] passwd = Client_gen_passwd(ECDH_code_B.getText());
+						//PASSWD_ECDH.setText(HASH_string_SHA(passwd.toString()));
+						PASSWD_ECDH.setText(Hex.toHexString(passwd));
+					}else {
+						
+					}
+				}
+			}
+		});//先是第一步，然后再考虑复制后的第二步。判断的if一会再写
+		
+		
+		
+		//==========ECDH==============
+		
 		//definition ends
 	}
 
@@ -634,6 +738,117 @@ public class ProjectV2 extends JFrame {
 //
 // --------------------start functions------------------------
 //
+	//-----------ECDH-------------
+		//ECDH之神命令你们退下
+	//在ECDH设计部分，我将分为两个部分：
+	//首先发起通信的，被称为客户端。接受通信的，被称为服务器。
+	//实际上每个本软件都既是客户端也是服务器，但为了好区分，好写代码，就这样吧。 
+	
+	//首先定义一个EC密钥对。放在main上面了，是全局的。
+	//老规矩，我先生成本地密钥对
+	public static void Gen_EC_Key_Pair() {
+		try {
+			KeyPairGenerator local_keypairgen = KeyPairGenerator.getInstance("ECDH");
+			ECGenParameterSpec parameterSpec = new ECGenParameterSpec("secp256r1");
+			local_keypairgen.initialize(parameterSpec);
+			ecKeyPair = local_keypairgen.generateKeyPair();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidAlgorithmParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//这样便生成了EC对，存到全局变量。
+	}
+	//先不管agree
+	public String Client_gen_code(){
+		PublicKey Cli_pub = ecKeyPair.getPublic();
+		String code = Base64.getEncoder().encodeToString(Cli_pub.getEncoded());
+		return code;
+	}
+	
+	public byte[] Client_gen_passwd( String sercode ) {
+		try {
+			byte[] code = Base64.getDecoder().decode(sercode);
+			KeyFactory cliKeyFac = KeyFactory.getInstance("ECDH");
+			X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(code);
+			PublicKey serverPublicKey = cliKeyFac.generatePublic(x509KeySpec);
+			KeyAgreement cliAgree = KeyAgreement.getInstance("ECDH");
+			cliAgree.init(ecKeyPair.getPrivate());
+			cliAgree.doPhase(serverPublicKey, true);
+			byte[] passwd = cliAgree.generateSecret();
+			return passwd;
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		return "Error".getBytes();
+	}
+	
+	
+	public byte[] Server_gen_passwd( String inputcode ){
+		try {
+			byte[] code = Base64.getDecoder().decode(inputcode);
+			//base64转化byte
+			KeyFactory server_keyFac = KeyFactory.getInstance("ECDH");
+			X509EncodedKeySpec x509keysp = new X509EncodedKeySpec(code);
+			PublicKey client_pubkey = server_keyFac.generatePublic(x509keysp);
+			ECParameterSpec ecFromClient = ((ECPublicKey)client_pubkey).getParams();
+			//封装密钥得到参数
+			KeyPairGenerator server_pairGen = KeyPairGenerator.getInstance("ECDH");
+			server_pairGen.initialize(ecFromClient);
+			ecKeyPair = server_pairGen.generateKeyPair();
+			//生成客户端密钥对
+			KeyAgreement serverAgree = KeyAgreement.getInstance("ECDH");
+			serverAgree.init(ecKeyPair.getPrivate());
+			serverAgree.doPhase(client_pubkey, true);
+			byte[] passwd = serverAgree.generateSecret();
+			return passwd;
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidAlgorithmParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "Error".getBytes();
+	}
+	
+	public String Server_code( ){
+		//返回交换码
+		PublicKey ser_pub = ecKeyPair.getPublic();
+		String sercode = Base64.getEncoder().encodeToString(ser_pub.getEncoded());
+		return sercode;
+	}
+	
+
+
+
+
+
+
+	//==========ECDH==============
+	
+
 	
 	//--------RSA短对话-----------
 	
@@ -655,7 +870,7 @@ public class ProjectV2 extends JFrame {
 	}
 	//生成全局的RSA本机公私密钥（全局变量定义在main）
 	
-	public static String encrypt_use_his_rsa_pubkey( String input_pubkey , String plain ) {
+	public String encrypt_use_his_rsa_pubkey( String input_pubkey , String plain ) {
 		byte[] unpack_key = Base64.getDecoder().decode(input_pubkey);
 		PublicKey pubkey = null;
 		try {
