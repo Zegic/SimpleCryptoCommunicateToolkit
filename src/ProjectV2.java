@@ -84,6 +84,7 @@ public class ProjectV2 extends JFrame {
 	private static KeyPair rsaKeyPair;
 	private static KeyPair ecKeyPair;
 	private static int Server_or_Client;
+	private JTextField PASSWD_ECDH;
 	
 	public static void main(String[] args) {
 		Security.addProvider(new BouncyCastleProvider());
@@ -111,6 +112,98 @@ public class ProjectV2 extends JFrame {
 		JTabbedPane Main_Pane = new JTabbedPane(JTabbedPane.TOP);
 		Main_Pane.setBackground(new Color(226, 189, 238));
 		contentPane.add(Main_Pane);
+		//======text=======
+		
+		//------ECDH-------
+		JPanel ECDH = new JPanel();
+		Main_Pane.addTab("ECDH密钥交换", null, ECDH, null);
+		ECDH.setLayout(null);
+		
+		JTextArea ECDH_code_A = new JTextArea();
+		ECDH_code_A.setBounds(10, 10, 480, 239);
+		ECDH.add(ECDH_code_A);
+		JScrollPane scrollPane_3 = new JScrollPane(ECDH_code_A);
+		scrollPane_3.setBounds(10, 10, 480, 239);
+		ECDH.add(scrollPane_3);
+		ECDH_code_A.setLineWrap(true);
+		ECDH_code_A.setWrapStyleWord(true);
+		
+		JTextArea ECDH_code_B = new JTextArea();
+		ECDH_code_B.setBounds(505, 10, 480, 239);
+		ECDH.add(ECDH_code_B);
+		JScrollPane scrollPane_4 = new JScrollPane(ECDH_code_B);
+		scrollPane_4.setBounds(505, 10, 480, 239);
+		ECDH.add(scrollPane_4);
+		ECDH_code_B.setLineWrap(true);
+		ECDH_code_B.setWrapStyleWord(true);
+		
+		JTextArea Explain_A = new JTextArea();
+		Explain_A.setBounds(10, 259, 379, 93);
+		ECDH.add(Explain_A);
+		Explain_A.setEditable(false);
+		Explain_A.setText("操作说明：这里是A区域。如果你先点击了一键生成\n就把A区域的codeA发给你的小伙伴\n此时你是客户端\n稍后你的小伙伴发给你codeB，你需要把codeB复制到B区域\n然后再点一次一键交换");
+		
+		JTextArea Explain_B = new JTextArea();
+		Explain_B.setBounds(505, 259, 369, 93);
+		ECDH.add(Explain_B);
+		Explain_B.setEditable(false);
+		Explain_B.setText("这里是B区域。如果你的小伙伴把codeA发给你\n你就把codeA复制到A区域（左边的）\n然后点击一键交换（此时你已经得到密钥而小伙伴还没有）\n把上边框里生成的codeB发给你的小伙伴。");
+		
+		JButton btn_START_ECDH = new JButton("\u50BB\u74DC\u5F0F\u6309\u94AE\u4E4B\u4E00\u952E\u4EA4\u6362");
+		btn_START_ECDH.setBounds(574, 547, 339, 93);
+		ECDH.add(btn_START_ECDH);
+		
+		PASSWD_ECDH = new JTextField();
+		PASSWD_ECDH.setBounds(505, 413, 458, 31);
+		ECDH.add(PASSWD_ECDH);
+		PASSWD_ECDH.setColumns(10);
+		
+		JButton button = new JButton("New button");
+		button.setBounds(397, 201, 93, 23);
+		ECDH.add(button);
+		
+		JButton btn_paste_ECDH_A = new JButton("\u7C98\u8D34");
+		btn_paste_ECDH_A.setBounds(397, 257, 93, 49);
+		ECDH.add(btn_paste_ECDH_A);
+		
+		JButton btn_paste_ECDH_B = new JButton("\u7C98\u8D34");
+		btn_paste_ECDH_B.setBounds(884, 259, 93, 49);
+		ECDH.add(btn_paste_ECDH_B);
+		
+		JTextArea zhushi1 = new JTextArea();
+		zhushi1.setBounds(505, 445, 143, 31);
+		ECDH.add(zhushi1);
+		zhushi1.setText("这里将显示会话密钥");
+		
+		JTextArea debugEC_textarea = new JTextArea();
+		debugEC_textarea.setBounds(10, 413, 418, 269);
+		ECDH.add(debugEC_textarea);
+		debugEC_textarea.setText("这里是debug窗口，也是提示窗口\n");
+		debugEC_textarea.setEditable(false);
+		
+		JButton btn_clearA_ECDH = new JButton("\u6E05\u7A7A");
+		btn_clearA_ECDH.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ECDH_code_A.setText(null);
+			}
+		});
+		btn_clearA_ECDH.setBounds(399, 321, 71, 31);
+		ECDH.add(btn_clearA_ECDH);
+		
+		JButton btn_clearB = new JButton("\u6E05\u7A7A");
+		btn_clearB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ECDH_code_B.setText(null);
+			}
+		});
+		btn_clearB.setBounds(884, 321, 71, 31);
+		ECDH.add(btn_clearB);
+		
+
+		
+
+		//======ECDH=====
+
 		// part : main pane 
 		
 		
@@ -384,36 +477,6 @@ public class ProjectV2 extends JFrame {
 		JTextArea text_Filehash_output_hash = new JTextArea();
 		text_Filehash_output_hash.setBounds(202, 326, 783, 52);
 		Hash_everything.add(text_Filehash_output_hash);
-		//======text=======
-		
-		//------ECDH-------
-		JPanel ECDH生成密钥 = new JPanel();
-		Main_Pane.addTab("ECDH", null, ECDH生成密钥, null);
-		ECDH生成密钥.setLayout(null);
-		
-		JTextArea ECDH_code_A = new JTextArea();
-		ECDH_code_A.setBounds(10, 10, 480, 239);
-		ECDH生成密钥.add(ECDH_code_A);
-		
-		JTextArea ECDH_code_B = new JTextArea();
-		ECDH_code_B.setBounds(505, 10, 480, 239);
-		ECDH生成密钥.add(ECDH_code_B);
-		
-		JTextArea Explain_A = new JTextArea();
-		Explain_A.setBounds(10, 259, 480, 93);
-		ECDH生成密钥.add(Explain_A);
-		
-		JTextArea Explain_B = new JTextArea();
-		Explain_B.setBounds(505, 259, 480, 93);
-		ECDH生成密钥.add(Explain_B);
-		
-		JTextArea PASSWD_ECDH = new JTextArea();
-		PASSWD_ECDH.setBounds(223, 376, 559, 64);
-		ECDH生成密钥.add(PASSWD_ECDH);
-		
-		JButton btn_START_ECDH = new JButton("\u50BB\u74DC\u5F0F\u6309\u94AE\u4E4B\u4E00\u952E\u4EA4\u6362");
-		btn_START_ECDH.setBounds(332, 492, 339, 93);
-		ECDH生成密钥.add(btn_START_ECDH);
 		//=======ECDH======
 		
 		
@@ -553,6 +616,8 @@ public class ProjectV2 extends JFrame {
 			}
 		});
 		//======file=======
+		
+		
 		//-------RSA短对话
 		
 		//目前先不遵循这个程序的设计规范，等到功能测试ok了在搞好看点
@@ -665,8 +730,8 @@ public class ProjectV2 extends JFrame {
 				}
 			}
 		});//这个按钮实现一键加解密+复制粘贴
-				
-				//RSA短对话=========
+		
+		//RSA短对话=========
 		
 		//-----------ECDH-------------
 			//ECDH之神命令你们退下
@@ -689,45 +754,93 @@ public class ProjectV2 extends JFrame {
 		//我还在思考passwd到底是byte[]还是字符串，需不需要hash
 		//那么就字符串吧。然后会把交换来的会话密钥自动复制到每一个AES的passwd屏幕里
 		
+		btn_paste_ECDH_A.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			    Transferable contents = clipboard.getContents(null);
+			    if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+			            String text;
+						try {
+							text = (String) contents.getTransferData(DataFlavor.stringFlavor);
+							ECDH_code_A.setText(text); 
+						} catch (UnsupportedFlavorException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}}}});
+		
+		btn_paste_ECDH_B.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			    Transferable contents = clipboard.getContents(null);
+			    if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+			            String text;
+						try {
+							text = (String) contents.getTransferData(DataFlavor.stringFlavor);
+							ECDH_code_B.setText(text); 
+						} catch (UnsupportedFlavorException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}}}});
+		
 		btn_START_ECDH.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				if (ECDH_code_B.getText().length()==0) {
-				if (ECDH_code_A.getText().length()!=0) {
-					//如果有，那就变成服务器
-					Server_or_Client = 1;
-					//服务器收到code，进行处理
-					//服务器生成公钥，由用户复制到客户端
-					//服务器生成会话密钥
-					byte[] passwd = Server_gen_passwd(ECDH_code_A.getText());
-					//PASSWD_ECDH.setText(HASH_string_SHA(passwd.toString()));
-					PASSWD_ECDH.setText(Hex.toHexString(passwd));
-					ECDH_code_B.setText(Server_code());
-					
-				}else {
-					//如果没有，那就变成客户端
-					Server_or_Client = 0;
-					//客户端生成keypair，然后生成code
-					//由用户复制code，发送到服务器
-					//客户端收到公钥，生成会话密钥
-					Gen_EC_Key_Pair();
-					ECDH_code_A.setText(Client_gen_code());
-				}}
-				else {
-					if (Server_or_Client == 0) {
-						byte[] passwd = Client_gen_passwd(ECDH_code_B.getText());
-						//PASSWD_ECDH.setText(HASH_string_SHA(passwd.toString()));
-						PASSWD_ECDH.setText(Hex.toHexString(passwd));
-					}else {
-						
-					}
-				}
+		// TODO Auto-generated method stub
+		if (ECDH_code_B.getText().length()==0) {
+		if (ECDH_code_A.getText().length()!=0) {
+			//如果有，那就变成服务器
+			debugEC_textarea.append("你收到了来自小伙伴的codeA，你成为服务器 \n");
+			Server_or_Client = 1;
+			//服务器收到code，进行处理
+			//服务器生成公钥，由用户复制到客户端
+			//服务器生成会话密钥
+			byte[] passwd = Server_gen_passwd(ECDH_code_A.getText());
+			//PASSWD_ECDH.setText(HASH_string_SHA(passwd.toString()));
+			PASSWD_ECDH.setText(Hex.toHexString(passwd));
+			ECDH_code_B.setText(Server_code());
+			debugEC_textarea.append("你得到了会话密钥 \n");
+			debugEC_textarea.append("服务器生成了会话密钥和codeB。把codeB发给你的小伙伴 \n");
+			String text = ECDH_code_B.getText();
+			Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+			StringSelection sl = new StringSelection(text);
+			cb.setContents(sl, null);
+			debugEC_textarea.append("已经帮你把codeB复制到剪贴板 \n");
+			
+		}else {
+			//如果没有，那就变成客户端
+			debugEC_textarea.append("你率先点击一键交换，你成为客户端 \n");
+			Server_or_Client = 0;
+			//客户端生成keypair，然后生成code
+			//由用户复制code，发送到服务器
+			//客户端收到公钥，生成会话密钥
+			Gen_EC_Key_Pair();
+			debugEC_textarea.append("生成了codeA，把它发给你的小伙伴 \n");
+			ECDH_code_A.setText(Client_gen_code());
+			String text = ECDH_code_A.getText();
+			Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+			StringSelection sl = new StringSelection(text);
+			cb.setContents(sl, null);
+			debugEC_textarea.append("已经帮你复制到剪贴板了 \n");
+			debugEC_textarea.append("你还需要小伙伴的codeB来生成会话密钥。等小伙伴发给你codeB，粘贴到B区域\n然后点一键生成 \n");
+			//这一堆是自动复制的。我再做下次会考虑把复制粘贴都封装成函数,妈的麻烦死了
+		}}
+		else {
+			if (Server_or_Client == 0) {
+				byte[] passwd = Client_gen_passwd(ECDH_code_B.getText());
+				//PASSWD_ECDH.setText(HASH_string_SHA(passwd.toString()));
+				PASSWD_ECDH.setText(Hex.toHexString(passwd));
+				debugEC_textarea.append("你得到了会话密钥。 \n");
+			}else {
+				//服务端到这里就没了，没有什么else
+			}
+		}
 			}
 		});//先是第一步，然后再考虑复制后的第二步。判断的if一会再写
-		
-		
 		
 		//==========ECDH==============
 		
@@ -840,11 +953,6 @@ public class ProjectV2 extends JFrame {
 		return sercode;
 	}
 	
-
-
-
-
-
 
 	//==========ECDH==============
 	

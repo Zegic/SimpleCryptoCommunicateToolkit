@@ -1,0 +1,45 @@
+btn_copy_INPUT_rsa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			    Transferable contents = clipboard.getContents(null);
+			    if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+			        
+			            String text;
+						try {
+							text = (String) contents.getTransferData(DataFlavor.stringFlavor);
+							text_input_rsa.setText(text); 
+						} catch (UnsupportedFlavorException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+			        //按钮：粘贴
+			}			}
+		});
+		
+		
+		
+btn_copy_OUTPUT_rsa.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String text = text_output_rsa.getText();
+				Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+				StringSelection sl = new StringSelection(text);
+				cb.setContents(sl, null);
+			}
+		});//按钮：复制
+		
+		JTextArea RSApubA = new JTextArea();
+		RSApubA.setBounds(10, 10, 480, 99);
+		RSA_text.add(RSApubA);
+		//设置换行
+		RSApubA.setLineWrap(true);
+		RSApubA.setWrapStyleWord(true);
+		JScrollPane scrollPane_input = new JScrollPane(RSApubA);
+		RSA_text.add(scrollPane_input);
+		scrollPane_input.setBounds(10, 10, 480, 99);
+		
+		
+		debugEC_textarea.append(" \n");
+		
+		
+		
