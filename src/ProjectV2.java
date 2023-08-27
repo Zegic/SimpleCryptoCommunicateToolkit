@@ -76,7 +76,7 @@ public class ProjectV2 extends JFrame {
 	private JTextField textField_sourceFIle_path_file;
 	private JTextField textField_pswd_file;
 	private JTextField textField_output_path_file;
-
+	private static JTextArea debug_zgx = new JTextArea();
 	/**
 	 * Launch the application.
 	 */
@@ -175,11 +175,11 @@ public class ProjectV2 extends JFrame {
 		ECDH.add(zhushi1);
 		zhushi1.setText("这里将显示会话密钥");
 		
-		JTextArea debugEC_textarea = new JTextArea();
-		debugEC_textarea.setBounds(10, 413, 418, 269);
-		ECDH.add(debugEC_textarea);
-		debugEC_textarea.setText("这里是debug窗口，也是提示窗口\n");
-		debugEC_textarea.setEditable(false);
+		
+		debug_zgx.setBounds(10, 413, 460, 269);
+		ECDH.add(debug_zgx);
+		debug_zgx.setText("这里是debug窗口，也是提示窗口\n");
+		debug_zgx.setEditable(false);
 		
 		JButton btn_clearA_ECDH = new JButton("\u6E05\u7A7A");
 		btn_clearA_ECDH.addActionListener(new ActionListener() {
@@ -794,7 +794,7 @@ public class ProjectV2 extends JFrame {
 		if (ECDH_code_B.getText().length()==0) {
 		if (ECDH_code_A.getText().length()!=0) {
 			//如果有，那就变成服务器
-			debugEC_textarea.append("你收到了来自小伙伴的codeA，你成为服务器 \n");
+			debug_zgx.append("你收到了来自小伙伴的codeA，你成为服务器 \n");
 			Server_or_Client = 1;
 			//服务器收到code，进行处理
 			//服务器生成公钥，由用户复制到客户端
@@ -803,30 +803,30 @@ public class ProjectV2 extends JFrame {
 			//PASSWD_ECDH.setText(HASH_string_SHA(passwd.toString()));
 			PASSWD_ECDH.setText(Hex.toHexString(passwd));
 			ECDH_code_B.setText(Server_code());
-			debugEC_textarea.append("你得到了会话密钥 \n");
-			debugEC_textarea.append("服务器生成了会话密钥和codeB。把codeB发给你的小伙伴 \n");
+			debug_zgx.append("你得到了会话密钥 \n");
+			debug_zgx.append("服务器生成了会话密钥和codeB。把codeB发给你的小伙伴 \n");
 			String text = ECDH_code_B.getText();
 			Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
 			StringSelection sl = new StringSelection(text);
 			cb.setContents(sl, null);
-			debugEC_textarea.append("已经帮你把codeB复制到剪贴板 \n");
+			debug_zgx.append("已经帮你把codeB复制到剪贴板 \n");
 			
 		}else {
 			//如果没有，那就变成客户端
-			debugEC_textarea.append("你率先点击一键交换，你成为客户端 \n");
+			debug_zgx.append("你率先点击一键交换，你成为客户端 \n");
 			Server_or_Client = 0;
 			//客户端生成keypair，然后生成code
 			//由用户复制code，发送到服务器
 			//客户端收到公钥，生成会话密钥
 			Gen_EC_Key_Pair();
-			debugEC_textarea.append("生成了codeA，把它发给你的小伙伴 \n");
+			debug_zgx.append("生成了codeA，把它发给你的小伙伴 \n");
 			ECDH_code_A.setText(Client_gen_code());
 			String text = ECDH_code_A.getText();
 			Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
 			StringSelection sl = new StringSelection(text);
 			cb.setContents(sl, null);
-			debugEC_textarea.append("已经帮你复制到剪贴板了 \n");
-			debugEC_textarea.append("你还需要小伙伴的codeB来生成会话密钥。等小伙伴发给你codeB，粘贴到B区域\n然后点一键生成 \n");
+			debug_zgx.append("已经帮你复制到剪贴板了 \n");
+			debug_zgx.append("你还需要小伙伴的codeB来生成会话密钥。等小伙伴发给你codeB，粘贴到B区域\n然后点一键生成 \n");
 			//这一堆是自动复制的。我再做下次会考虑把复制粘贴都封装成函数,妈的麻烦死了
 		}}
 		else {
@@ -834,7 +834,7 @@ public class ProjectV2 extends JFrame {
 				byte[] passwd = Client_gen_passwd(ECDH_code_B.getText());
 				//PASSWD_ECDH.setText(HASH_string_SHA(passwd.toString()));
 				PASSWD_ECDH.setText(Hex.toHexString(passwd));
-				debugEC_textarea.append("你得到了会话密钥。 \n");
+				debug_zgx.append("你得到了会话密钥。 \n");
 			}else {
 				//服务端到这里就没了，没有什么else
 			}
@@ -846,7 +846,12 @@ public class ProjectV2 extends JFrame {
 		
 		//definition ends
 	}
-
+	
+	//接下啦想做的事情：
+	//EC的无限长度非对称加密对话
+	//数字证书的离线加密
+	
+	
 	
 //
 // --------------------start functions------------------------
@@ -867,10 +872,13 @@ public class ProjectV2 extends JFrame {
 			ecKeyPair = local_keypairgen.generateKeyPair();
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			debug_zgx.append("NoSuchAlgorithmException\n");
+			e.printStackTrace();			
 		} catch (InvalidAlgorithmParameterException e) {
 			// TODO Auto-generated catch block
+			debug_zgx.append("InvalidAlgorithmParameterException");
 			e.printStackTrace();
+			
 		}
 		//这样便生成了EC对，存到全局变量。
 	}
@@ -892,20 +900,25 @@ public class ProjectV2 extends JFrame {
 			cliAgree.doPhase(serverPublicKey, true);
 			byte[] passwd = cliAgree.generateSecret();
 			return passwd;
+			//return Hex.decode("error");
 		} catch (InvalidKeyException e) {
 			// TODO Auto-generated catch block
+			debug_zgx.append("InvalidKeyException \n");
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
+			debug_zgx.append("NoSuchAlgorithmException \n");
 			e.printStackTrace();
 		} catch (InvalidKeySpecException e) {
 			// TODO Auto-generated catch block
+			debug_zgx.append("InvalidKeySpecException \n");
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block
+			debug_zgx.append("IllegalStateException \n");
 			e.printStackTrace();
 		}		
-		return "Error".getBytes();
+		return Hex.decode("e44041");
 	}
 	
 	
@@ -929,21 +942,26 @@ public class ProjectV2 extends JFrame {
 			return passwd;
 		} catch (InvalidKeyException e) {
 			// TODO Auto-generated catch block
+			debug_zgx.append("InvalidKeyException \n");
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
+			debug_zgx.append("NoSuchAlgorithmException \n");
 			e.printStackTrace();
 		} catch (InvalidKeySpecException e) {
 			// TODO Auto-generated catch block
+			debug_zgx.append("InvalidKeySpecException \n");
 			e.printStackTrace();
 		} catch (InvalidAlgorithmParameterException e) {
 			// TODO Auto-generated catch block
+			debug_zgx.append("InvalidAlgorithmParameterException \n");
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block
+			debug_zgx.append("IllegalStateException \n");
 			e.printStackTrace();
 		}
-		return "Error".getBytes();
+		return Hex.decode("e44042");
 	}
 	
 	public String Server_code( ){
