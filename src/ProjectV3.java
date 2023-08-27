@@ -58,7 +58,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import java.awt.FlowLayout;
-import java.awt.TextField;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -70,7 +69,7 @@ import javax.swing.JScrollPane;
 
 //imports
 
-public class ProjectV2 extends JFrame {
+public class ProjectV3 extends JFrame {
 
 	private static JPanel contentPane;
 	private JTextField passwd_input_enc_text;
@@ -78,7 +77,7 @@ public class ProjectV2 extends JFrame {
 	private JTextField textField_sourceFIle_path_file;
 	private JTextField textField_pswd_file;
 	private JTextField textField_output_path_file;
-	private static JTextArea debug_ecdh = new JTextArea();
+	private static JTextArea debug_zgx = new JTextArea();
 	/**
 	 * Launch the application.
 	 */
@@ -93,7 +92,7 @@ public class ProjectV2 extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ProjectV2 frame = new ProjectV2();
+					ProjectV3 frame = new ProjectV3();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();}}});}
@@ -103,8 +102,7 @@ public class ProjectV2 extends JFrame {
 	 */
 	
 	
-	public ProjectV2() {
-		//definition elements-------------
+	public ProjectV3() {
 		setTitle("\u57FA\u4E8E\u7ED9\u5B9A\u4FE1\u9053\u7684\u52A0\u5BC6\u4EA4\u6D41\u88C5\u7F6E");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1024, 768);
@@ -115,7 +113,7 @@ public class ProjectV2 extends JFrame {
 		JTabbedPane Main_Pane = new JTabbedPane(JTabbedPane.TOP);
 		Main_Pane.setBackground(new Color(226, 189, 238));
 		contentPane.add(Main_Pane);
-		//==main pane==
+		//======text=======
 		
 		//------ECDH-------
 		JPanel ECDH = new JPanel();
@@ -178,10 +176,11 @@ public class ProjectV2 extends JFrame {
 		ECDH.add(zhushi1);
 		zhushi1.setText("这里将显示会话密钥");
 		
-		debug_ecdh.setBounds(10, 413, 460, 269);
-		ECDH.add(debug_ecdh);
-		debug_ecdh.setText("这里是debug窗口，也是提示窗口\n");
-		debug_ecdh.setEditable(false);
+		
+		debug_zgx.setBounds(10, 413, 460, 269);
+		ECDH.add(debug_zgx);
+		debug_zgx.setText("这里是debug窗口，也是提示窗口\n");
+		debug_zgx.setEditable(false);
 		
 		JButton btn_clearA_ECDH = new JButton("\u6E05\u7A7A");
 		btn_clearA_ECDH.addActionListener(new ActionListener() {
@@ -201,26 +200,22 @@ public class ProjectV2 extends JFrame {
 		btn_clearB.setBounds(884, 321, 71, 31);
 		ECDH.add(btn_clearB);
 		
-		JButton btn_usePasswdEC = new JButton("\u5E94\u7528\u6B64\u5BC6\u7801\u5E76\u590D\u5236\u5230\u526A\u5207\u677F");
-		btn_usePasswdEC.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		btn_usePasswdEC.setBounds(759, 446, 204, 23);
-		ECDH.add(btn_usePasswdEC);
-	
+
+		
 
 		//======ECDH=====
-		
 
+		// part : main pane 
 		
-		//-----RSA-----
+		
+		//definition elements-------------
+		
 		JPanel RSA_text = new JPanel();
 		RSA_text.setToolTipText("");
 		Main_Pane.addTab("RSA短对话加解密", null, RSA_text, null);
 		RSA_text.setLayout(null);
 		
+		//-----RSA-----
 		JTextArea RSApubA = new JTextArea();
 		RSApubA.setBounds(10, 10, 480, 99);
 		RSA_text.add(RSApubA);
@@ -231,6 +226,7 @@ public class ProjectV2 extends JFrame {
 		RSA_text.add(scrollPane_input);
 		scrollPane_input.setBounds(10, 10, 480, 99);
 
+		
 		JTextArea RSApubB = new JTextArea();
 		RSApubB.setBounds(500, 10, 480, 99);
 		RSA_text.add(RSApubB);
@@ -272,19 +268,22 @@ public class ProjectV2 extends JFrame {
 		btn_RSA_dec.setBounds(842, 447, 143, 50);
 		RSA_text.add(btn_RSA_dec);
 		
-		JTextArea debug_rsa = new JTextArea();
-		debug_rsa.setBounds(21, 447, 656, 226);
-		RSA_text.add(debug_rsa);
-		debug_rsa.setLineWrap(true);
-		debug_rsa.setWrapStyleWord(true);
-		debug_rsa.setEditable(false);
-		debug_rsa.setText("这里是debug窗口。\nRSA短对话加密使用说明：\n先点 生成我的公钥，然后粘贴到微信，发给你的小伙伴\n你的小伙伴生成他的公钥，然后从微信发给你\n你把你小伙伴的公钥粘贴到右上角\n然后点那个一键加密就好了，不懂的看github源码或者直接来问zegic");
+//		JTextArea debug_zgx = new JTextArea();
+//		debug_zgx.setBounds(21, 447, 656, 226);
+		RSA_text.add(debug_zgx);
+//		debug_zgx.setLineWrap(true);
+//		debug_zgx.setWrapStyleWord(true);
+//		debug_zgx.setEditable(false);
+//		debug_zgx.setText("这里是debug窗口。\n整个软件的使用说明：待编写。\nRSA短对话加密使用说明：\n先点 生成我的公钥，然后粘贴到微信，发给你的小伙伴\n你的小伙伴生成他的公钥，然后从微信发给你\n你把你小伙伴的公钥粘贴到右上角\n然后点那个一键加密就好了，不懂的看github源码或者直接来问zegic");
 		//使用说明：\n 这是zegic写的，他很懒，懒得写说明，所以自己摸索用吧。\n 实在不会用，去github上看源码，或者找zegic问\n
 		JButton btn_copy_A_rsa = new JButton("\u590D\u5236");
 		btn_copy_A_rsa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cp_copy_TextArea(RSApubA);
-				debug_rsa.append("已将你的公钥复制");
+				String text = RSApubA.getText();
+				Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+				StringSelection sl = new StringSelection(text);
+				cb.setContents(sl, null);
+				debug_zgx.append("已将你的公钥复制");
 			}
 		});//按钮：复制
 		btn_copy_A_rsa.setBounds(354, 107, 124, 35);
@@ -293,24 +292,57 @@ public class ProjectV2 extends JFrame {
 		JButton btn_copy_B_rsa = new JButton("\u7C98\u8D34");
 		btn_copy_B_rsa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cp_paste_TextArea(RSApubB);
-			}});
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			    Transferable contents = clipboard.getContents(null);
+			    if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+			        
+			            String text;
+						try {
+							text = (String) contents.getTransferData(DataFlavor.stringFlavor);
+							RSApubB.setText(text); 
+							debug_zgx.append("已粘贴");
+						} catch (UnsupportedFlavorException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+							debug_zgx.append("粘贴失败！！！\n你复制了个啥玩意？甚至不是字符串！！\n");
+						}
+			        //按钮：粘贴
+			}}
+		});
 		btn_copy_B_rsa.setBounds(843, 107, 124, 34);
 		RSA_text.add(btn_copy_B_rsa);
 		
 		JButton btn_copy_INPUT_rsa = new JButton("\u7C98\u8D34");
 		btn_copy_INPUT_rsa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cp_paste_TextArea(text_input_rsa);
-			}});
+
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			    Transferable contents = clipboard.getContents(null);
+			    if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+			        
+			            String text;
+						try {
+							text = (String) contents.getTransferData(DataFlavor.stringFlavor);
+							text_input_rsa.setText(text); 
+						} catch (UnsupportedFlavorException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+			        //按钮：粘贴
+			}			}
+		});
 		btn_copy_INPUT_rsa.setBounds(874, 193, 93, 45);
 		RSA_text.add(btn_copy_INPUT_rsa);
 		
 		JButton btn_copy_OUTPUT_rsa = new JButton("\u590D\u5236");
 		btn_copy_OUTPUT_rsa.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cp_copy_TextArea(text_output_rsa);
-			}});//按钮：复制
+				String text = text_output_rsa.getText();
+				Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+				StringSelection sl = new StringSelection(text);
+				cb.setContents(sl, null);
+			}
+		});//按钮：复制
 		btn_copy_OUTPUT_rsa.setBounds(874, 332, 93, 45);
 		RSA_text.add(btn_copy_OUTPUT_rsa);
 		
@@ -327,6 +359,7 @@ public class ProjectV2 extends JFrame {
 		JButton btn_START_RSA = new JButton("\u3010 \u4E00\u952E\u81EA\u52A8\u52A0\u89E3\u5BC6\u5E76\u590D\u5236\u7C98\u8D34 \u3011");
 		btn_START_RSA.setBounds(713, 533, 242, 118);
 		RSA_text.add(btn_START_RSA);
+
 		//====RSA====
 		
 		
@@ -376,80 +409,26 @@ public class ProjectV2 extends JFrame {
 		
 		
 		
-		//-----对话加解密
+		//----加密文件
 		passwd_input_enc_text = new JTextField();
-		passwd_input_enc_text.setBounds(10, 267, 511, 51);
+		passwd_input_enc_text.setBounds(10, 267, 795, 51);
 		Encrypt_text.add(passwd_input_enc_text);
 		passwd_input_enc_text.setColumns(10);
-		passwd_input_enc_text.setText("（在此输入密码）");
 		
 		JTextArea text_input_enc_text = new JTextArea();
-		text_input_enc_text.setBounds(1, 1, 973, 256);
+		text_input_enc_text.setBounds(10, 10, 975, 247);
 		Encrypt_text.add(text_input_enc_text);
-		text_input_enc_text.setLineWrap(true);
-		text_input_enc_text.setWrapStyleWord(true);
-		JScrollPane scrollPane_5 = new JScrollPane(text_input_enc_text);
-		scrollPane_5.setBounds(10, 10, 975, 247);
-		Encrypt_text.add(scrollPane_5);
 		
 		JTextArea text_output_enc_text = new JTextArea();
 		text_output_enc_text.setBounds(10, 328, 975, 354);
 		Encrypt_text.add(text_output_enc_text);
-		text_output_enc_text.setLineWrap(true);
-		text_output_enc_text.setWrapStyleWord(true);
-		JScrollPane scrollPane_6 = new JScrollPane(text_output_enc_text);
-		scrollPane_6.setBounds(10, 328, 975, 354);
-		Encrypt_text.add(scrollPane_6);
 		
 		JButton btn_text_start = new JButton("\u5F00\u59CB\u52A0\u5BC6/\u89E3\u5BC6");
 		btn_text_start.setBounds(815, 267, 170, 51);
 		Encrypt_text.add(btn_text_start);
 		
-		JButton btnNewButton = new JButton("\u6E05\u7A7A");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				text_input_enc_text.setText(null);
-			}
-		});
-		btnNewButton.setBounds(531, 255, 93, 34);
-		Encrypt_text.add(btnNewButton);
-		
-		JButton btnNewButton_3 = new JButton("\u590D\u5236");
-		btnNewButton_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cp_copy_TextArea(text_input_enc_text);
-			}
-		});
-		btnNewButton_3.setBounds(623, 255, 93, 34);
-		Encrypt_text.add(btnNewButton_3);
-		
-		JButton btnNewButton_4 = new JButton("\u7C98\u8D34");
-		btnNewButton_4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cp_paste_TextArea(text_input_enc_text);
-			}
-		});
-		btnNewButton_4.setBounds(712, 255, 93, 34);
-		Encrypt_text.add(btnNewButton_4);
-		
-		JButton btnNewButton_5 = new JButton("\u6E05\u7A7A");
-		btnNewButton_5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				text_output_enc_text.setText(null);
-			}
-		});
-		btnNewButton_5.setBounds(531, 294, 93, 34);
-		Encrypt_text.add(btnNewButton_5);
-		
-		JButton btnNewButton_6 = new JButton("\u590D\u5236");
-		btnNewButton_6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cp_copy_TextArea(text_output_enc_text);
-			}
-		});
-		btnNewButton_6.setBounds(623, 294, 93, 34);
-		Encrypt_text.add(btnNewButton_6);
 
+		
 		JPanel Signature = new JPanel();
 		Main_Pane.addTab("数字签名", null, Signature, null);
 		Signature.setLayout(null);
@@ -499,13 +478,13 @@ public class ProjectV2 extends JFrame {
 		JTextArea text_Filehash_output_hash = new JTextArea();
 		text_Filehash_output_hash.setBounds(202, 326, 783, 52);
 		Hash_everything.add(text_Filehash_output_hash);
-		//------hash-------
+		//=======ECDH======
 		
 		
 		//======定义部分结束。下面是按钮部分=======
 		
-		
-		//-----hash按钮-----
+		//------hash-------
+
 		btn_hash_text_start_hash.addActionListener(new ActionListener() {
 			
 			@Override
@@ -529,7 +508,7 @@ public class ProjectV2 extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			JFileChooser chooser = new JFileChooser();
-			if (chooser.showOpenDialog(ProjectV2.this) == JFileChooser.APPROVE_OPTION) {
+			if (chooser.showOpenDialog(ProjectV3.this) == JFileChooser.APPROVE_OPTION) {
 				File file = chooser.getSelectedFile();
 				if (!file.isDirectory()) {
 					text_filePath_hash.setText(file.getAbsolutePath());
@@ -555,10 +534,13 @@ public class ProjectV2 extends JFrame {
 				}
 			}
 		});
-		//======hash按钮
+		//加密文件====
 		
+		//标签定义区域，标签定义全放在这里========
 		
 		//-------text-------
+
+		
 		btn_text_start.addActionListener(new ActionListener() {
 			
 			@Override
@@ -574,15 +556,20 @@ public class ProjectV2 extends JFrame {
 					text_output_enc_text.setText(encrypt_text(input_plain));
 				}
 			}
-		});//=======text=======
-
+		});
+		
+		
+		
+		//======hash=======
 		
 		//------file-------
 		btn_file_path_fileenc.addActionListener(new ActionListener() {
+			
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				JFileChooser chooser = new JFileChooser();
-				if (chooser.showOpenDialog(ProjectV2.this) == JFileChooser.APPROVE_OPTION) {
+				if (chooser.showOpenDialog(ProjectV3.this) == JFileChooser.APPROVE_OPTION) {
 					File file = chooser.getSelectedFile();
 					if (!file.isDirectory()) {
 						textField_sourceFIle_path_file.setText(file.getAbsolutePath());
@@ -591,12 +578,18 @@ public class ProjectV2 extends JFrame {
 			}
 		});
 		comboBox_choose_suanfa.setModel(new DefaultComboBoxModel<>(new String[] {"选择加密方式,默认 AES-OFB","SM4(待开发)"}));
+		
 		JButton btnNewButton_1 = new JButton("\u9009\u62E9\u8F93\u51FA\u8DEF\u5F84\uFF08\u9ED8\u8BA4\u4E3A\u6E90\u8DEF\u5F84\uFF09");
 		btnNewButton_1.setBounds(10, 296, 223, 51);
 		Encrypt_File.add(btnNewButton_1);
+		
 		JButton btnNewButton_2 = new JButton("\u5BC6\u7801\u662F\u5426\u52A0\u76D0\uFF08\u9ED8\u8BA4\u52A0\u76D0\uFF0C\u5F85\u5F00\u53D1\uFF09");
 		btnNewButton_2.setBounds(761, 167, 224, 51);
 		Encrypt_File.add(btnNewButton_2);
+		
+
+		
+		
 		btn_start_encrypt.addActionListener(new ActionListener() {
 			
 			@Override
@@ -611,6 +604,8 @@ public class ProjectV2 extends JFrame {
 				}
 			}
 		});		
+		
+		
 		btn_start_decrypt.addActionListener(new ActionListener() {
 			
 			@Override
@@ -625,10 +620,13 @@ public class ProjectV2 extends JFrame {
 		
 		
 		//-------RSA短对话
+		
 		//目前先不遵循这个程序的设计规范，等到功能测试ok了在搞好看点
 		//先使用DHKE，然后再使用ECDH
+				
 		//DHKE只需两次交流：A->B , B->A
 		//分成客户端和服务器的概念比较好理解
+				
 		//先是实现RSA
 		//RSApubA RSApubB btn_start_RSA
 				
@@ -638,9 +636,13 @@ public class ProjectV2 extends JFrame {
 			// TODO Auto-generated method stub
 			
 			RSApubA.setText(get_my_rsa_pubkey());
-			debug_rsa.setText("生成了你的公钥。快把公钥发给你的小伙伴\n");
-			cp_copy_TextArea(RSApubA);
-			debug_rsa.append("已经帮你把公钥复制到剪切板了\n");
+			debug_zgx.setText("生成了你的公钥。快把公钥发给你的小伙伴\n");
+
+			String text = RSApubA.getText();
+			Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+			StringSelection sl = new StringSelection(text);
+			cb.setContents(sl, null);
+			debug_zgx.append("已经帮你把公钥复制到剪切板了\n");
 		
 			}
 		});
@@ -651,7 +653,7 @@ public class ProjectV2 extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			text_output_rsa.setText(encrypt_use_his_rsa_pubkey(RSApubB.getText(),text_input_rsa.getText()));
-			debug_rsa.append("用对方的公钥加密你想给对方说的话\n");
+			debug_zgx.append("用对方的公钥加密你想给对方说的话\n");
 		}
 		});
 	
@@ -666,59 +668,75 @@ public class ProjectV2 extends JFrame {
 		
 		btn_START_RSA.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				debug_rsa.setText("这里是debug窗口。你按下了懒人键\n");
-				debug_rsa.append("作者知道你很懒，所以帮你操作函数  \n");
+				debug_zgx.setText("这里是debug窗口。你按下了懒人键\n");
+				debug_zgx.append("作者知道你很懒，所以帮你操作函数  \n");
 				//首先判断input有没有内容
-				debug_rsa.append("判断input有没有内容 \n");
+				debug_zgx.append("判断input有没有内容 \n");
 				if (text_input_rsa.getText().length()!=0) {
 				//如果有，判断是否是密文
-					debug_rsa.append(" input有内容，判断是否是密文\n");
+					debug_zgx.append(" input有内容，判断是否是密文\n");
 					if (text_input_rsa.getText().startsWith("RSAenc:")) {
 						
 						//是密文就将其解密，然后结束
-						debug_rsa.append("是密文，将其解密 \n");
+						debug_zgx.append("是密文，将其解密 \n");
 						text_output_rsa.setText(decrypt_by_my_rsa_prikey(text_input_rsa.getText()));
-						debug_rsa.append("明文输出到output \n");
+						debug_zgx.append("明文输出到output \n");
 					}else {
 						//不是密文就将其加密
-						debug_rsa.append("不是密文，将其加密 \n");
+						debug_zgx.append("不是密文，将其加密 \n");
 						text_output_rsa.setText(encrypt_use_his_rsa_pubkey(RSApubB.getText(), text_input_rsa.getText()));
-						debug_rsa.append("加密完成 \n");
+						debug_zgx.append("加密完成 \n");
 						//然后复制到剪贴板
-						cp_copy_TextArea(text_output_rsa);
-						debug_rsa.append("输出已复制到剪贴板 \n");
+						String text = text_output_rsa.getText();
+						Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+						StringSelection sl = new StringSelection(text);
+						cb.setContents(sl, null);
+						debug_zgx.append("输出已复制到剪贴板 \n");
 						//最后想办法清空input但不导致丢失写的东西。先直接清空试试。
 						//text_input_rsa.setText("");
-						//debug_rsa.setText(" 清空input \n");
+						//debug_zgx.setText(" 清空input \n");
 					}
 				}else {
 				//input没有内容
-					debug_rsa.append("input没有内容  \n");
-				    cp_paste_TextArea(text_input_rsa);
-				    //把剪贴板内容复制到input		
-				    debug_rsa.append("把剪贴板内容复制到input  \n");
+					debug_zgx.append("input没有内容  \n");
+					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				    Transferable contents = clipboard.getContents(null);
+				    if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+				            String text;
+							try {
+								text = (String) contents.getTransferData(DataFlavor.stringFlavor);
+								text_input_rsa.setText(text); 
+							} catch (UnsupportedFlavorException | IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}//按钮：粘贴
+						}//把剪贴板内容复制到input		
+				    debug_zgx.append("把剪贴板内容复制到input  \n");
 				    //然后判断内容是否密文
-				    debug_rsa.append("判断内容是否密文  \n");
+				    debug_zgx.append("判断内容是否密文  \n");
 				    if (text_input_rsa.getText().startsWith("RSAenc:")) {
 				    	text_output_rsa.setText(decrypt_by_my_rsa_prikey(text_input_rsa.getText()));
 				    //是密文，解密，结束
-				    	debug_rsa.append("内容是密文。解密。  \n");
+				    	debug_zgx.append("内容是密文。解密。  \n");
 				    }else {
-				    	debug_rsa.append("内容是明文，加密  \n");
+				    	debug_zgx.append("内容是明文，加密  \n");
 				    	//是明文，加密，复制到剪贴板
 						text_output_rsa.setText(encrypt_use_his_rsa_pubkey(RSApubB.getText(), text_input_rsa.getText()));
-						cp_copy_TextArea(text_output_rsa);
-						debug_rsa.append("密文已经复制到剪贴板  \n");
+						String text = text_output_rsa.getText();
+						Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+						StringSelection sl = new StringSelection(text);
+						cb.setContents(sl, null);
+						debug_zgx.append("密文已经复制到剪贴板  \n");
 				}
 				}
 			}
 		});//这个按钮实现一键加解密+复制粘贴
+		
 		//RSA短对话=========
-		
-		
 		
 		//-----------ECDH-------------
 			//ECDH之神命令你们退下
+		
 		//按钮的设计思路是这样的：
 		//首先整个交换只有一个按钮（除了复制粘贴按钮）
 		//至于提示屏幕是否分成俩，以后研究
@@ -727,26 +745,47 @@ public class ProjectV2 extends JFrame {
 			//服务器收到code，进行处理
 			//服务器生成公钥，由用户复制到客户端
 			//服务器生成会话密钥
+			
 		//如果没有，那就变成客户端
 			//客户端生成keypair，然后生成code
 			//由用户复制code，发送到服务器
 			//客户端收到公钥，生成会话密钥
+		
 		//最后把密钥显示在passwd屏幕上。
 		//我还在思考passwd到底是byte[]还是字符串，需不需要hash
 		//那么就字符串吧。然后会把交换来的会话密钥自动复制到每一个AES的passwd屏幕里
+		
 		btn_paste_ECDH_A.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			cp_paste_TextArea(ECDH_code_A);    
-			}});
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			    Transferable contents = clipboard.getContents(null);
+			    if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+			            String text;
+						try {
+							text = (String) contents.getTransferData(DataFlavor.stringFlavor);
+							ECDH_code_A.setText(text); 
+						} catch (UnsupportedFlavorException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}}}});
 		
 		btn_paste_ECDH_B.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			cp_paste_TextArea(ECDH_code_B);    
-			}});
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			    Transferable contents = clipboard.getContents(null);
+			    if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+			            String text;
+						try {
+							text = (String) contents.getTransferData(DataFlavor.stringFlavor);
+							ECDH_code_B.setText(text); 
+						} catch (UnsupportedFlavorException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}}}});
 		
 		btn_START_ECDH.addActionListener(new ActionListener() {
 			
@@ -756,7 +795,7 @@ public class ProjectV2 extends JFrame {
 		if (ECDH_code_B.getText().length()==0) {
 		if (ECDH_code_A.getText().length()!=0) {
 			//如果有，那就变成服务器
-			debug_ecdh.append("你收到了来自小伙伴的codeA，你成为服务器 \n");
+			debug_zgx.append("你收到了来自小伙伴的codeA，你成为服务器 \n");
 			Server_or_Client = 1;
 			//服务器收到code，进行处理
 			//服务器生成公钥，由用户复制到客户端
@@ -765,24 +804,30 @@ public class ProjectV2 extends JFrame {
 			//PASSWD_ECDH.setText(HASH_string_SHA(passwd.toString()));
 			PASSWD_ECDH.setText(Hex.toHexString(passwd));
 			ECDH_code_B.setText(Server_code());
-			debug_ecdh.append("你得到了会话密钥 \n");
-			debug_ecdh.append("服务器生成了会话密钥和codeB。把codeB发给你的小伙伴 \n");
-			cp_copy_TextArea(ECDH_code_B);
-			debug_ecdh.append("已经帮你把codeB复制到剪贴板 \n");
+			debug_zgx.append("你得到了会话密钥 \n");
+			debug_zgx.append("服务器生成了会话密钥和codeB。把codeB发给你的小伙伴 \n");
+			String text = ECDH_code_B.getText();
+			Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+			StringSelection sl = new StringSelection(text);
+			cb.setContents(sl, null);
+			debug_zgx.append("已经帮你把codeB复制到剪贴板 \n");
 			
 		}else {
 			//如果没有，那就变成客户端
-			debug_ecdh.append("你率先点击一键交换，你成为客户端 \n");
+			debug_zgx.append("你率先点击一键交换，你成为客户端 \n");
 			Server_or_Client = 0;
 			//客户端生成keypair，然后生成code
 			//由用户复制code，发送到服务器
 			//客户端收到公钥，生成会话密钥
 			Gen_EC_Key_Pair();
-			debug_ecdh.append("生成了codeA，把它发给你的小伙伴 \n");
+			debug_zgx.append("生成了codeA，把它发给你的小伙伴 \n");
 			ECDH_code_A.setText(Client_gen_code());
-			cp_copy_TextArea(ECDH_code_A);
-			debug_ecdh.append("已经帮你复制到剪贴板了 \n");
-			debug_ecdh.append("你还需要小伙伴的codeB来生成会话密钥。等小伙伴发给你codeB，粘贴到B区域\n然后点一键生成 \n");
+			String text = ECDH_code_A.getText();
+			Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+			StringSelection sl = new StringSelection(text);
+			cb.setContents(sl, null);
+			debug_zgx.append("已经帮你复制到剪贴板了 \n");
+			debug_zgx.append("你还需要小伙伴的codeB来生成会话密钥。等小伙伴发给你codeB，粘贴到B区域\n然后点一键生成 \n");
 			//这一堆是自动复制的。我再做下次会考虑把复制粘贴都封装成函数,妈的麻烦死了
 		}}
 		else {
@@ -790,7 +835,7 @@ public class ProjectV2 extends JFrame {
 				byte[] passwd = Client_gen_passwd(ECDH_code_B.getText());
 				//PASSWD_ECDH.setText(HASH_string_SHA(passwd.toString()));
 				PASSWD_ECDH.setText(Hex.toHexString(passwd));
-				debug_ecdh.append("你得到了会话密钥。 \n");
+				debug_zgx.append("你得到了会话密钥。 \n");
 			}else {
 				//服务端到这里就没了，没有什么else
 			}
@@ -803,19 +848,9 @@ public class ProjectV2 extends JFrame {
 		//definition ends
 	}
 	
-	
-	
-	
-	
-	
 	//接下啦想做的事情：
 	//EC的无限长度非对称加密对话
 	//数字证书的离线加密
-	
-	
-	
-	
-	
 	
 	
 	
@@ -827,6 +862,7 @@ public class ProjectV2 extends JFrame {
 	//在ECDH设计部分，我将分为两个部分：
 	//首先发起通信的，被称为客户端。接受通信的，被称为服务器。
 	//实际上每个本软件都既是客户端也是服务器，但为了好区分，好写代码，就这样吧。 
+	
 	//首先定义一个EC密钥对。放在main上面了，是全局的。
 	//老规矩，我先生成本地密钥对
 	public static void Gen_EC_Key_Pair() {
@@ -837,11 +873,11 @@ public class ProjectV2 extends JFrame {
 			ecKeyPair = local_keypairgen.generateKeyPair();
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
-			debug_ecdh.append("NoSuchAlgorithmException\n");
+			debug_zgx.append("NoSuchAlgorithmException\n");
 			e.printStackTrace();			
 		} catch (InvalidAlgorithmParameterException e) {
 			// TODO Auto-generated catch block
-			debug_ecdh.append("InvalidAlgorithmParameterException");
+			debug_zgx.append("InvalidAlgorithmParameterException");
 			e.printStackTrace();
 			
 		}
@@ -868,23 +904,24 @@ public class ProjectV2 extends JFrame {
 			//return Hex.decode("error");
 		} catch (InvalidKeyException e) {
 			// TODO Auto-generated catch block
-			debug_ecdh.append("InvalidKeyException \n");
+			debug_zgx.append("InvalidKeyException \n");
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
-			debug_ecdh.append("NoSuchAlgorithmException \n");
+			debug_zgx.append("NoSuchAlgorithmException \n");
 			e.printStackTrace();
 		} catch (InvalidKeySpecException e) {
 			// TODO Auto-generated catch block
-			debug_ecdh.append("InvalidKeySpecException \n");
+			debug_zgx.append("InvalidKeySpecException \n");
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block
-			debug_ecdh.append("IllegalStateException \n");
+			debug_zgx.append("IllegalStateException \n");
 			e.printStackTrace();
 		}		
 		return Hex.decode("e44041");
 	}
+	
 	
 	public byte[] Server_gen_passwd( String inputcode ){
 		try {
@@ -906,23 +943,23 @@ public class ProjectV2 extends JFrame {
 			return passwd;
 		} catch (InvalidKeyException e) {
 			// TODO Auto-generated catch block
-			debug_ecdh.append("InvalidKeyException \n");
+			debug_zgx.append("InvalidKeyException \n");
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
-			debug_ecdh.append("NoSuchAlgorithmException \n");
+			debug_zgx.append("NoSuchAlgorithmException \n");
 			e.printStackTrace();
 		} catch (InvalidKeySpecException e) {
 			// TODO Auto-generated catch block
-			debug_ecdh.append("InvalidKeySpecException \n");
+			debug_zgx.append("InvalidKeySpecException \n");
 			e.printStackTrace();
 		} catch (InvalidAlgorithmParameterException e) {
 			// TODO Auto-generated catch block
-			debug_ecdh.append("InvalidAlgorithmParameterException \n");
+			debug_zgx.append("InvalidAlgorithmParameterException \n");
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block
-			debug_ecdh.append("IllegalStateException \n");
+			debug_zgx.append("IllegalStateException \n");
 			e.printStackTrace();
 		}
 		return Hex.decode("e44042");
@@ -935,11 +972,13 @@ public class ProjectV2 extends JFrame {
 		return sercode;
 	}
 	
+
 	//==========ECDH==============
 	
 
 	
 	//--------RSA短对话-----------
+	
 	public static String get_my_rsa_pubkey(  ) {
 		
 		KeyPairGenerator kpg = null;
@@ -1039,11 +1078,13 @@ public class ProjectV2 extends JFrame {
 	//用自己的公钥解密
 	
 //整个设计思路是：通过微信互发公钥，然后各自用对方公钥加密，然后用自己的私钥解密
+	
 	//========RSA短对话===========
 	
 
 	
 	//--------文件加密--------
+	
 	//我目前只做AES。毕竟国密的效率还不如AES一半
  	public void encrypt_AES_file( String password , String input_filepath , String output_filepath ) {
 		char[] passwd = password.toCharArray();
@@ -1076,6 +1117,7 @@ public class ProjectV2 extends JFrame {
 			}
 	}
 	//AES,OFB,加密
+	
 	
 	public void decrypt_AES_file( String password , String input_filepath , String output_filepath ) {
 		char[] passwd = password.toCharArray();
@@ -1240,6 +1282,7 @@ public class ProjectV2 extends JFrame {
 		return "Error";
 	}
 	//sha256
+	
 	//希望：MD5，SHA256。现在先随便做几个
 	
 	public String HASH_file_SM3( String file_path ) {
@@ -1304,42 +1347,4 @@ public class ProjectV2 extends JFrame {
 		}
 		return "Error";
 	}
-	
-	public void cp_copy_TextField( JTextField tf ) {
-	String text = tf.getText();
-	Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
-	StringSelection sl = new StringSelection(text);
-	cb.setContents(sl, null);
-	}
-	
-	public void cp_copy_TextArea( JTextArea tf ) {
-		String text = tf.getText();
-		Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
-		StringSelection sl = new StringSelection(text);
-		cb.setContents(sl, null);
-		}
-	
-	public void cp_paste_TextField( JTextField tf ) {
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-	    Transferable contents = clipboard.getContents(null);
-	    if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-	    	String text;
-		try {
-			text = (String) contents.getTransferData(DataFlavor.stringFlavor);
-			tf.setText(text); 
-		} catch (UnsupportedFlavorException | IOException e1) {
-			e1.printStackTrace();
-		}}}
-	
-	public void cp_paste_TextArea( JTextArea tf ) {
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-	    Transferable contents = clipboard.getContents(null);
-	    if (contents != null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-	    	String text;
-		try {
-			text = (String) contents.getTransferData(DataFlavor.stringFlavor);
-			tf.setText(text); 
-		} catch (UnsupportedFlavorException | IOException e1) {
-			e1.printStackTrace();
-		}}}
 }
